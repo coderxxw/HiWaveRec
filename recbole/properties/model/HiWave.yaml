@@ -1,0 +1,28 @@
+
+# 1) Base architecture
+hidden_size: 64              # Hidden dimension
+hidden_dropout_prob: 0.5     # Dropout rate
+hidden_act: 'gelu'           # Activation function
+layer_norm_eps: 1e-12        # LayerNorm epsilon
+initializer_range: 0.02      # Parameter initialization range
+loss_type: 'CE'                # Loss function type: 'CE'
+# 2) Wavelet decomposition
+wavelet: 'db4'               # Wavelet basis: haar, db2, db4, db6, sym4
+wavelet_depth: 3             # Decomposition depth
+wavelet_mode: 'zero'         # Padding mode: zero, reflect, periodic
+learning_rate: 0.001
+
+# 3) Low-frequency encoder
+n_heads: 2                   # Number of attention heads
+n_layers: 2                  # Number of encoder layers
+inner_size: 256              # Feed-forward hidden size
+attn_dropout_prob: 0.5       # Attention dropout rate
+
+
+# 4) Causal Detail Gating
+cdg_kernel_size: 5            # Context kernel size for local high-frequency modeling
+cdg_act: 'gelu'               # Activation after the context extractor
+cdg_gate_act: 'sigmoid'       # Gate activation function
+cdg_gate_scale: 2.0           # Global scale factor for gate output
+
+
