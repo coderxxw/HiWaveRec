@@ -1,27 +1,12 @@
 # Python
 __pycache__/
-*.py[cod]
-*.so
-*.egg-info/
 
-# IDE
-.idea/
+
 .vscode/
 .history/
 
 # Dataset
-dataset/
-checkpoint/
+# dataset/
 saved/
 log/
 log_tensorboard/
-logs/
-output/
-result/
-tensorboard*/
-
-# Environment
-.env/
-venv/
-.venv/
-env/
