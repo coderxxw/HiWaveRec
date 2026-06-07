@@ -22,37 +22,27 @@ class CausalConv1d(nn.Module):
         super(CausalConv1d, self).__init__()
         self.padding = (kernel_size - 1) * dilation
         
-        # Temporal depthwise convolution for local patterns.
         self.conv = nn.Conv1d(
             channels, channels, kernel_size, 
             padding=0, dilation=dilation, groups=channels, **kwargs
         )
         
-        # Normalization and activation.
         self.ln = nn.LayerNorm(channels, eps=1e-8)
         self.act = nn.GELU()
-        
-        # Channel mixing.
+
         self.pointwise = nn.Conv1d(channels, channels, kernel_size=1)
 
     def forward(self, x):
         # x: [B, C, L]
         res = x
         
-        # Left padding for causal convolution.
         x_pad = F.pad(x, (self.padding, 0))
         
-        # Temporal feature extraction.
-        out = self.conv(x_pad)
-        
-        # LayerNorm works on the last dimension.
+        out = self.conv(x_pad)        
         out = self.ln(out.transpose(1, 2)).transpose(1, 2)
-        out = self.act(out)
-        
-        # Cross-channel mixing.
+        out = self.act(out)        
         out = self.pointwise(out)
         
-        # Residual connection.
         return out + res
 
 class LowFreqSelfAttention(nn.Module):
@@ -135,17 +125,6 @@ class LowFreqSelfAttention(nn.Module):
         hidden_states = self.out_dropout(hidden_states)
         scale_factor = math.sqrt(self.dense.out_features)
         
-        # # Optional runtime scale debug.
-        # if not self.training and torch.rand(1).item() < 0.05:
-        #     print(f"\n[SPSA Debug] scale_factor: {scale_factor:.2f}")
-        #     print(f"   input_tensor (mean/std/max):  {input_tensor.mean().item():.4f} / {input_tensor.std().item():.4f} / {input_tensor.max().item():.4f}")
-        #     print(f"   hidden_states unscaled (mean/std/max): {hidden_states.mean().item():.4f} / {hidden_states.std().item():.4f} / {hidden_states.max().item():.4f}")
-        #     scaled_hs = hidden_states / scale_factor
-        #     print(f"   hidden_states scaled (mean/std/max):   {scaled_hs.mean().item():.4f} / {scaled_hs.std().item():.4f} / {scaled_hs.max().item():.4f}")
-        #     res = input_tensor + scaled_hs
-        #     print(f"   residual result (mean/std/max):        {res.mean().item():.4f} / {res.std().item():.4f} / {res.max().item():.4f}")
-
-        # Residual update in wavelet space.
         return input_tensor + (hidden_states / scale_factor)
 
 
