@@ -6,17 +6,18 @@ hidden_act: 'gelu'           # Activation function
 layer_norm_eps: 1e-12        # LayerNorm epsilon
 initializer_range: 0.02      # Parameter initialization range
 loss_type: 'CE'                # Loss function type: 'CE'
-
-# 2) Wavelet decomposition
-wavelet: 'db4'               # Wavelet basis: haar, db2, db4, db6, sym4
-wavelet_depth: 3             # Decomposition depth
-wavelet_mode: 'zero'         # Padding mode: zero, reflect, periodic
-learning_rate: 0.001
-
-# 3) Low-frequency encoder
-n_heads: 2                   # Number of attention heads
+learning_rate: 0.0005
 n_layers: 2                  # Number of encoder layers
 inner_size: 256              # Feed-forward hidden size
+
+
+# 2) Wavelet decomposition
+wavelet: 'sym4'               # Wavelet basis: haar, db2, db4, db6, sym4
+wavelet_depth: 3             # Decomposition depth
+wavelet_mode: 'zero'         # Padding mode: zero，symmetric, constant
+
+# 3) Low-frequency encoder
+n_heads: 1                   # Number of attention heads
 attn_dropout_prob: 0.5       # Attention dropout rate
 
 # 4) Causal Detail Gating

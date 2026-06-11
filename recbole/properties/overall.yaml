@@ -41,7 +41,7 @@ eval_args:
   mode: full                          # (str) The evaluation mode ranging in ['full','unixxx','popxxx','labeled'].
 
 repeatable: False                 # (bool) Whether to evaluate results with a repeatable recommendation scene. 
-metrics: ["Recall","MRR","NDCG"]  # (list or str) Evaluation metrics.
+metrics: ["Hit","NDCG"]  # (list or str) Evaluation metrics.
 topk: [5, 10, 20]                 # (list or int or None) The value of k for topk evaluation metrics.
 valid_metric: NDCG@10             # (str) The evaluation metric for early stopping. 
 valid_metric_bigger: True         # (bool) Whether to take a bigger valid metric value as a better result.
